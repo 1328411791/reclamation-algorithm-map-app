@@ -4,6 +4,7 @@
     <item
         android:id="@+id/action_button"
         android:title="返回主页"
+        android:icon="@android:drawable/ic_popup_sync"
         android:textColor="#FFFFFF"
         android:textSize="24dp"
         android:textStyle="bold"
