@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.reclamation_algorithm"
+    namespace = "org.liahnu.reclamationAlgorithm"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.reclamation_algorithm"
+        applicationId = "org.liahnu.reclamationAlgorithm"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
@@ -42,6 +42,14 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+    buildToolsVersion = "35.0.0"
+    sourceSets {
+        getByName("main") {
+            assets {
+                srcDirs("src\\main\\assets", "src\\main\\assets")
+            }
         }
     }
 }

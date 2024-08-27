@@ -1,4 +1,4 @@
-package com.example.reclamation_algorithm
+package org.liahnu.reclamationAlgorithm.view
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -13,6 +13,9 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import org.liahnu.reclamationAlgorithm.R
+import kotlin.math.log
+
 
 class WebView : AppCompatActivity() {
 
@@ -59,6 +62,8 @@ class WebView : AppCompatActivity() {
         // 设置强制横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+
+        Log.i(TAG,"setting success")
         // 加载网页
         webView.loadUrl(TARGET_URL)
     }
