@@ -1,0 +1,60 @@
+name: Release-app
+on:
+  push:
+    branches:
+      - master
+jobs:
+  # 编译静态页面,地址：https://github.com/QingXia-Ela/reclamation-algorithm-map
+  build-static-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout page repository
+        uses: actions/checkout@v3
+        with:
+          repository: https://github.com/QingXia-Ela/reclamation-algorithm-map
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Build static pages
+        run: |
+          npm install
+          npm run build
+      - name: tar static pages
+        run: tar -zcvf static-pages.tar.gz dist
+      - name: Upload static pages
+        uses: actions/upload-artifact@v2
+        with:
+          name: static-pages
+
+  build-apk:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    needs: build-static-pages
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+      - uses: gradle/gradle-build-action@v2
+        with:
+          gradle-version: current
+          arguments: assembleRelease
+      - name: Download static pages to /app/src/main/assets
+        uses: actions/download-artifact@v2
+        with:
+          name: static-pages
+      - uses: r0adkll/sign-android-release@v1
+        id: sign_app
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+      - run: mv ${{steps.sign_app.outputs.signedReleaseFile}} Reclamation-Algorithm-Map_$GITHUB_REF_NAME.apk
+      - uses: ncipollo/release-action@v1
+        with:
+          artifacts: "*.apk"
+          token: ${{ github.token }}
+          generateReleaseNotes: true
