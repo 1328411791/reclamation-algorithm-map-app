@@ -1,4 +1,4 @@
-package com.example.reclamation_algorithm;
+package org.liahnu.reclamationAlgorithm;
 
 import android.content.Context;
 

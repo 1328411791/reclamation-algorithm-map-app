@@ -1,4 +1,4 @@
-package com.example.reclamation_algorithm
+package org.liahnu.reclamationAlgorithm.view
 
 import android.content.Intent
 import android.content.pm.ActivityInfo
@@ -13,12 +13,15 @@ import android.view.View
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import org.liahnu.reclamationAlgorithm.R
+import kotlin.math.log
+
 
 class WebView : AppCompatActivity() {
 
     val TAG = "WebView"
 
-    val TARGET_URL = "https://qingxia-ela.github.io/reclamation-algorithm-map/"
+    val TARGET_URL = "file:///android_asset/dist-desktop/index.html"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,9 +59,13 @@ class WebView : AppCompatActivity() {
         val originalUserAgent = webView.settings.userAgentString
         settings.userAgentString = "$originalUserAgent Desktop"
 
+        settings.allowUniversalAccessFromFileURLs = true
+
         // 设置强制横屏
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 
+
+        Log.i(TAG,"setting success")
         // 加载网页
         webView.loadUrl(TARGET_URL)
     }
