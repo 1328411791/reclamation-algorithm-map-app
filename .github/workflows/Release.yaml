@@ -11,7 +11,7 @@ jobs:
       - name: Checkout page repository
         uses: actions/checkout@v3
         with:
-          repository: https://github.com/QingXia-Ela/reclamation-algorithm-map
+          repository: QingXia-Ela/reclamation-algorithm-map
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Build static pages
@@ -24,6 +24,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: static-pages
+          path: static-pages.tar.gz
 
   build-apk:
     runs-on: ubuntu-latest
@@ -40,10 +41,15 @@ jobs:
         with:
           gradle-version: current
           arguments: assembleRelease
-      - name: Download static pages to /app/src/main/assets
+      - name: Download static pages
         uses: actions/download-artifact@v2
         with:
           name: static-pages
+          path: /tmp/static-pages
+      - name: Extract static pages
+        run: tar -zxvf /tmp/static-pages/static-pages.tar.gz -C /tmp/static-pages
+      - name: Copy static pages to android assets
+        run: cp -r /tmp/static-pages/dist/app/* app/src/main/assets/
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
