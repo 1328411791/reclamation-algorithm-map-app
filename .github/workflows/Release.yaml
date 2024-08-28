@@ -14,6 +14,10 @@ jobs:
           repository: QingXia-Ela/reclamation-algorithm-map
           ref: main
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: node setup
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
       - name: Build static pages
         run: |
           npm install
