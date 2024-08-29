@@ -16,6 +16,11 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 34
+          build-tools: 35.0.0
       - name: Set version name
         run: ./gradlew setVersionName -PversionName=${GITHUB_REF_NAME#refs/tags/}
       - uses: gradle/gradle-build-action@v2
