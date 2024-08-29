@@ -1,35 +1,8 @@
 name: Release-app
 on:
-  push:
-    branches:
-      - master
+  tag:
+    - 'v*'
 jobs:
-  # 编译静态页面,地址：https://github.com/QingXia-Ela/reclamation-algorithm-map
-  build-static-pages:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout page repository
-        uses: actions/checkout@v3
-        with:
-          repository: QingXia-Ela/reclamation-algorithm-map
-          ref: main
-          token: ${{ secrets.GITHUB_TOKEN }}
-      - name: node setup
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-      - name: Build static pages
-        run: |
-          npm install
-          npm run build
-      - name: tar static pages
-        run: tar -zcvf static-pages.tar.gz dist
-      - name: Upload static pages
-        uses: actions/upload-artifact@v2
-        with:
-          name: static-pages
-          path: static-pages.tar.gz
-
   build-apk:
     runs-on: ubuntu-latest
     permissions:
@@ -45,15 +18,6 @@ jobs:
         with:
           gradle-version: current
           arguments: assembleRelease
-      - name: Download static pages
-        uses: actions/download-artifact@v2
-        with:
-          name: static-pages
-          path: /tmp/static-pages
-      - name: Extract static pages
-        run: tar -zxvf /tmp/static-pages/static-pages.tar.gz -C /tmp/static-pages
-      - name: Copy static pages to android assets
-        run: cp -r /tmp/static-pages/dist/app/* app/src/main/assets/
       - uses: r0adkll/sign-android-release@v1
         id: sign_app
         with:
