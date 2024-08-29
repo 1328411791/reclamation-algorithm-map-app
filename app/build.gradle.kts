@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -75,4 +77,28 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+}
+
+fun getVersionCode(): Int {
+    val properties = Properties()
+    file("version.properties").inputStream().use { properties.load(it) }
+    return properties.getProperty("VERSION_CODE").toInt()
+}
+
+fun getVersionName(): String {
+    val properties = Properties()
+    file("version.properties").inputStream().use { properties.load(it) }
+    return properties.getProperty("VERSION_NAME")
+}
+
+tasks.register("setVersionName") {
+    doLast {
+        val versionName = project.findProperty("versionName") as String?
+        if (versionName != null) {
+            val properties = Properties()
+            file("version.properties").inputStream().use { properties.load(it) }
+            properties.setProperty("VERSION_NAME", versionName)
+            file("version.properties").outputStream().use { properties.store(it, null) }
+        }
+    }
 }
