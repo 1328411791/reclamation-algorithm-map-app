@@ -7,7 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    needs: build-static-pages
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-java@v3
