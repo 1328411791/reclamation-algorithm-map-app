@@ -21,7 +21,7 @@ class WebView : AppCompatActivity() {
 
     val TAG = "WebView"
 
-    val TARGET_URL = "file:///android_asset/dist-desktop/index.html"
+    val TARGET_URL = "file:///android_asset/static/index.html"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
